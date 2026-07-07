@@ -151,13 +151,16 @@ function renderProducts() {
 
     return `
       <div class="product-card" data-id="${product.id}">
-        <span class="product-brand-tag">${product.brand}</span>
         <div class="product-image-container" onclick="openQuickView('${product.id}')" style="cursor:pointer">
           ${imageHTML}
           ${fallbackHTML}
         </div>
         <div class="product-info">
-          <span class="product-category-text">${product.category}</span>
+          <div class="product-brand-row">
+            <span class="product-brand-text">${product.brand}</span>
+            <span class="brand-category-divider">·</span>
+            <span class="product-category-text">${product.category}</span>
+          </div>
           <h3 class="product-title" title="${product.name}">${product.name}</h3>
           <span class="product-pack-size">
             <svg style="width: 14px; height: 14px; fill: var(--text-light);" viewBox="0 0 24 24">

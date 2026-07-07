@@ -956,12 +956,31 @@ header {
   flex-grow: 1;
 }
 
+.product-brand-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.product-brand-text {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--primary-light);
+  font-weight: 700;
+}
+
+.brand-category-divider {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin: 0 0.3rem;
+}
+
 .product-category-text {
   font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
-  margin-bottom: 0.3rem;
   font-weight: 600;
 }
 
