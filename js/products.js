@@ -3034,7 +3034,7 @@ const PRODUCTS_DATA = [
   },
   {
     "id": "sja-mtr-123",
-    "name": "MTR Lemon Rice Paste",
+    "name": "MTR Lemon Rice Powder",
     "brand": "MTR",
     "category": "Food & Spices",
     "mrp": 60,
@@ -3043,7 +3043,7 @@ const PRODUCTS_DATA = [
     "image": "images/products/sja-mtr-123.png",
     "inStock": true,
     "fallbackColor": "linear-gradient(135deg, #EF4444, #DC2626)",
-    "description": "Official MTR Lemon Rice Paste product from MTR Foods catalog, pounded to perfection for authentic taste."
+    "description": "Official MTR Lemon Rice Powder product from MTR Foods catalog, pounded to perfection for authentic taste."
   },
   {
     "id": "sja-denver-1",
