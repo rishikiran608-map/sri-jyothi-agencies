@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1e3c72">
+  <title>Sri Jyothi Agencies | Authorized FMCG Distributor</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Official digital product catalogue of Sri Jyothi Agencies. Authorized distributor of MTR, Dukes, Denver, Ujala, Ashikha Agarbatti. Browse wholesale FMCG products and place order enquiries instantly via WhatsApp.">
+  <meta name="keywords" content="Sri Jyothi Agencies, Wholesale Distributor, FMCG, MTR Distributor, Dukes, Denver, Ujala, Jyothy Labs, Ashikha Agarbatti, Kirana Wholesale, Supermarket Supplier, Yerraguntla, Kadapa, Andhra Pradesh">
+  <meta name="author" content="Sri Jyothi Agencies">
+  
+  <!-- Styling -->
+  <link rel="stylesheet" href="css/styles.css?v=1.1.0">
+</head>
+<body>
+
+  <!-- Recovery Alert Banner (LocalStorage abandoned cart detection) -->
+  <div id="recovery-banner" class="recovery-banner">
+    <div class="recovery-banner-content">
+      <span>🛒 We saved the products you were viewing earlier! Ready to submit?</span>
+      <button class="recovery-action-btn" onclick="toggleCartDrawer(true)">Open Cart</button>
+      <button class="recovery-close-btn" onclick="closeRecoveryBanner()">×</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <!-- Brand Logo -->
+      <a href="#" class="logo-wrapper">
+        <div class="logo-icon">SJ</div>
+        <div class="logo-text">
+          <h1>Sri Jyothi Agencies</h1>
+          <p>Authorized FMCG Distributor</p>
+        </div>
+      </a>
+
+      <!-- Desktop Search Bar -->
+      <div class="search-container">
+        <input type="text" id="header-search" class="search-input" placeholder="Search products, brands...">
+        <svg class="search-icon-svg" viewBox="0 0 24 24">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+      </div>
+
+      <!-- Action items -->
+      <div class="nav-actions">
+        <a href="#about-trust" class="nav-link">Verify Credentials</a>
+        <button id="dark-mode-toggle" class="dark-mode-toggle" title="Toggle dark mode">🌙</button>
+        <button id="open-cart-btn" class="cart-header-btn">
+          <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24">
+            <path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.37-.66-.11-1.48-.87-1.48H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 5h12.15l-2.76 5H8.53L6.16 5zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.9 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+          </svg>
+          Cart
+          <span class="cart-count-badge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <!-- Animated floating gradient orbs -->
+    <div class="hero-orb"></div>
+    <div class="hero-orb"></div>
+    <div class="hero-orb"></div>
+    <div class="hero-grid-pattern"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h2 class="hero-title">Your Trusted <span class="hero-highlight">Wholesale FMCG</span> Partner</h2>
+      <p class="hero-subtitle">Official distributors of major brands: MTR, Dukes, Denver, Ujala, Ashikha. Simple, transparent browsing for retail shops and kirana stores.</p>
+      <a href="#catalogue" class="hero-cta">
+        <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19 7h-8v6H5v-4H3v10h2v-4h14v4h2V7h-2zm-6 0v6h-6V7h6z"/></svg>
+        Browse Wholesale Catalogue
+      </a>
+    </div>
+  </section>
+
+  <!-- Wave Divider -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,30 1440,40 L1440,60 L0,60 Z" fill="var(--bg-card-solid, #ffffff)"/>
+    </svg>
+  </div>
+
+  <!-- Animated Stats Counter Section -->
+  <section class="stats-section" id="stats-section">
+    <div class="stats-container">
+      <div class="stat-item">
+        <div class="stat-icon">📦</div>
+        <div class="stat-number" data-target="270" data-suffix="+">0</div>
+        <div class="stat-label">Products</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">🏷️</div>
+        <div class="stat-number" data-target="16" data-suffix="">0</div>
+        <div class="stat-label">Premium Brands</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-number" data-target="21" data-suffix="+">0</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">🏪</div>
+        <div class="stat-number" data-target="500" data-suffix="+">0</div>
+        <div class="stat-label">Retailers Served</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Horizontal Brand Showcase / Filter Pills -->
+  <section class="brands-section">
+    <div class="brands-container" id="brands-slider">
+      <!-- Brands dynamically injected via app.js -->
+    </div>
+  </section>
+
+  <!-- Catalog Main Container -->
+  <section id="catalogue" class="catalog-section">
+    <!-- Desktop Sidebar Categories -->
+    <aside class="filters-sidebar">
+      <div class="filter-group">
+        <h3 class="filter-title">Categories</h3>
+        <ul class="category-list" id="desktop-category-list">
+          <!-- Categories dynamically injected via app.js -->
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Products Content Grid & Mobile UI -->
+    <main class="catalog-content">
+      <!-- Mobile Category List (Horizontal Scroll Pills) -->
+      <div class="mobile-categories-wrapper" id="mobile-category-list">
+        <!-- Injected via app.js -->
+      </div>
+
+      <!-- Mobile Search Bar -->
+      <div class="mobile-search-wrapper">
+        <input type="text" id="mobile-search" class="search-input" placeholder="Search products, brands...">
+        <svg class="search-icon-svg" viewBox="0 0 24 24">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+      </div>
+
+      <!-- Catalogue Header Stats -->
+      <div class="catalog-header">
+        <span class="results-count" id="results-count">Loading products...</span>
+      </div>
+
+      <!-- Product Cards Grid -->
+      <div class="products-grid" id="products-grid">
+        <!-- Products dynamically rendered via app.js -->
+      </div>
+    </main>
+  </section>
+
+  <!-- Trust, About & Verification Certificates Section -->
+  <section id="about-trust" class="trust-section">
+    <div class="trust-title-group">
+      <h2>Authorized Distributor Credentials</h2>
+      <p>We are registered partners with direct company links. View authorization letters and warehouse highlights to confirm our authenticity.</p>
+    </div>
+
+    <!-- Credential / Media Grid -->
+    <div class="trust-grid">
+      <!-- MTR Certificate -->
+      <div class="trust-card">
+        <a href="#mtr-cert-modal" class="trust-img-wrapper">
+          <img src="images/certificates/mtr_auth.jpg" alt="MTR Authorization Certificate" class="trust-img">
+          <span class="zoom-badge">
+            <svg style="width: 12px; height: 12px; fill: white;" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            Click to Zoom
+          </span>
+        </a>
+        <h3>MTR Partnership Certificate</h3>
+        <p>Direct company partnership certificate issued by MTR Foods for direct distribution partnership.</p>
+      </div>
+
+      <!-- Jyothy Labs Stockist Award -->
+      <div class="trust-card">
+        <a href="#jyothy-award-modal" class="trust-img-wrapper">
+          <img src="images/certificates/jyothy_award.jpg" alt="Jyothy Labs Stockist Award" class="trust-img">
+          <span class="zoom-badge">
+            <svg style="width: 12px; height: 12px; fill: white;" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            Click to Zoom
+          </span>
+        </a>
+        <h3>Jyothy Labs Stockist Award</h3>
+        <p>Distributor award presented by Jyothy Laboratories Limited (Ujala, Exo, Margo) in Hyderabad Stockist Meet.</p>
+      </div>
+
+      <!-- GST Certificate -->
+      <div class="trust-card">
+        <a href="#gst-cert-modal" class="trust-img-wrapper">
+          <img src="images/certificates/gst_cert.jpg" alt="GST Registration Certificate" class="trust-img">
+          <span class="zoom-badge">
+            <svg style="width: 12px; height: 12px; fill: white;" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            Click to Zoom
+          </span>
+        </a>
+        <h3>GST Registration Certificate</h3>
+        <p>Official tax registration record for Sree Jyothi Agencies (GSTIN: 37DMDPS8400Q1ZC).</p>
+      </div>
+
+      <!-- Warehouse Storefront Gallery -->
+      <div class="trust-card">
+        <a href="#warehouse-modal" class="trust-img-wrapper">
+          <img src="images/shop/warehouse.jpg" alt="Sri Jyothi Agencies Warehouse" class="trust-img">
+          <span class="zoom-badge">
+            <svg style="width: 12px; height: 12px; fill: white;" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            Click to Zoom
+          </span>
+        </a>
+        <h3>Warehouse Storage</h3>
+        <p>Our secure inventory depot ensuring moisture-free food storage and optimal stock flow.</p>
+      </div>
+      
+      <!-- Storefront Gallery -->
+      <div class="trust-card">
+        <a href="#storefront-modal" class="trust-img-wrapper">
+          <img src="images/shop/storefront.jpg" alt="Sri Jyothi Agencies Office Storefront" class="trust-img">
+          <span class="zoom-badge">
+            <svg style="width: 12px; height: 12px; fill: white;" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            Click to Zoom
+          </span>
+        </a>
+        <h3>Administrative Office</h3>
+        <p>Main reception and order desks where offline phone inquiries are logged and dispatched.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact and Google Map Section -->
+  <section class="contact-section">
+    <div class="contact-info-panel">
+      <h2>Visit or Contact Us</h2>
+      <p>Have specific enquiries or want custom pricing sheets for bulk distribution? Reach out directly or drop by our warehouse.</p>
+      
+      <div class="contact-details-list">
+        <!-- Address -->
+        <div class="contact-detail-item">
+          <div class="contact-icon-box">
+            <svg style="width: 22px; height: 22px; fill: currentColor;" viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+          </div>
+          <div class="contact-detail-text">
+            <h4>Our Address</h4>
+            <p>D.No. 3/136, Vempalli Road, Opposite to Asanam, Yerraguntla, Kadapa District, Andhra Pradesh - 516309</p>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="contact-detail-item">
+          <div class="contact-icon-box">
+            <svg style="width: 22px; height: 22px; fill: currentColor;" viewBox="0 0 24 24">
+              <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-2.2 2.2a15.045 15.045 0 0 1-6.59-6.59l2.2-2.21a.96.96 0 0 0 .25-1A11.36 11.36 0 0 1 8.5 4c0-.55-.45-1-1-1H4.01c-.55 0-1 .45-1 1C3 13.9 11.1 22 21 22c.55 0 1-.45 1-1v-4.62c0-.55-.45-1-1-1z"/>
+            </svg>
+          </div>
+          <div class="contact-detail-text">
+            <h4>Call / Phone Support</h4>
+            <p>+91 98495 82606 (Main WhatsApp & Call)</p>
+            <p>+91 85198 01438 (Secondary Support)</p>
+          </div>
+        </div>
+
+        <!-- Hours -->
+        <div class="contact-detail-item">
+          <div class="contact-icon-box">
+            <svg style="width: 22px; height: 22px; fill: currentColor;" viewBox="0 0 24 24">
+              <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
+            </svg>
+          </div>
+          <div class="contact-detail-text">
+            <h4>Business Hours</h4>
+            <p>Monday - Saturday: 9:00 AM - 7:00 PM</p>
+            <p>Sunday: Closed</p>
+          </div>
+        </div>
+      </div>
+
+      <a href="https://wa.me/919849582606" target="_blank" class="contact-action-btn">
+        <svg style="width: 18px; height: 18px; fill: white;" viewBox="0 0 24 24">
+          <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.73 14.1c-.24.69-1.42 1.26-1.97 1.3-1.61.12-3.51-.73-5.28-2.5-1.78-1.78-2.62-3.68-2.5-5.28.05-.55.62-1.73 1.31-1.97.23-.08.47-.11.7-.11.23 0 .46.01.66.45.2.49.71 1.73.77 1.86.06.12.1.27.02.44-.08.17-.18.28-.3.42l-.46.54c-.15.17-.31.36-.13.68.18.31.81 1.33 1.74 2.16.93.83 2.11 1.31 2.42 1.47.31.16.49.13.68-.08.19-.22.82-.95 1.04-1.28.22-.32.44-.27.73-.16.29.11 1.87.88 2.2 1.04.32.16.54.24.62.38.08.14.08.82-.16 1.51z"/>
+        </svg>
+        Instant Help on WhatsApp
+      </a>
+    </div>
+
+    <!-- Google Map Container -->
+    <div class="map-container">
+      <iframe src="https://maps.google.com/maps?q=Vempalli%20Road,%20Yerraguntla,%20Andhra%20Pradesh,%20India&t=&z=16&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>Sri Jyothi Agencies</h3>
+        <p>Authorized FMCG distribution partners linking national brands with retail supermarkets and local kirana stores since 2005.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Our Brands</h4>
+        <ul>
+          <li><a href="#catalogue">MTR Foods</a></li>
+          <li><a href="#catalogue">Dukes Confectionery</a></li>
+          <li><a href="#catalogue">Ujala, Exo & Jyothy Labs</a></li>
+          <li><a href="#catalogue">Ashika & Maya Incense</a></li>
+          <li><a href="#catalogue">Margo & Neem Active Soaps</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Compliance & Legals</h4>
+        <ul>
+          <li><a href="#about-trust">GST Registration</a></li>
+          <li><a href="#about-trust">Company Authorizations</a></li>
+          <li><a href="#about-trust">Warehouse Inspection</a></li>
+          <li><a href="#about-trust">Trading Licenses</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Sri Jyothi Agencies. All Rights Reserved. Designed for mobile retailers.</p>
+      <p>GSTIN: 37DMDPS8400Q1ZC</p>
+    </div>
+  </footer>
+
+  <!-- Floating Mobile Cart Trigger FAB Button -->
+  <button id="floating-cart-btn" class="floating-cart-trigger" title="Open Enquiry Cart">
+    <svg style="width: 24px; height: 24px; fill: currentColor;" viewBox="0 0 24 24">
+      <path d="M17.21 9l-4.38-6.56c-.18-.28-.5-.44-.83-.44s-.65.16-.83.44L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.88 1.46h13.08c.88 0 1.65-.62 1.88-1.46l2.54-9.27.04-.27c0-.55-.45-1-1-1h-4.79zM9 9l3-4.5L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+    </svg>
+    <span class="floating-cart-badge" style="display: none;">0</span>
+  </button>
+
+  <!-- Cart Drawer Background overlay -->
+  <div id="cart-drawer-backdrop" class="cart-drawer-backdrop"></div>
+
+  <!-- Cart Drawer (Slide-Over Panel) -->
+  <div id="cart-drawer" class="cart-drawer">
+    <div class="cart-drawer-header">
+      <h3 class="cart-drawer-title">
+        <svg style="width: 20px; height: 20px; fill: var(--primary);" viewBox="0 0 24 24">
+          <path d="M17.21 9l-4.38-6.56c-.18-.28-.5-.44-.83-.44s-.65.16-.83.44L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.88 1.46h13.08c.88 0 1.65-.62 1.88-1.46l2.54-9.27.04-.27c0-.55-.45-1-1-1h-4.79zM9 9l3-4.5L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+        </svg>
+        Wholesale Cart
+      </h3>
+      <button id="close-cart-btn" class="close-drawer-btn">&times;</button>
+    </div>
+    
+    <div class="cart-drawer-content">
+      <!-- Cart Items Container -->
+      <div id="cart-items-list" class="cart-items-list">
+        <!-- Rendered via app.js -->
+      </div>
+
+      <!-- Retailer Checkout Details Form -->
+      <div class="checkout-form-container">
+        <h4 class="checkout-form-title">
+          <svg style="width: 16px; height: 16px; fill: var(--primary);" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+          </svg>
+          Retailer Details
+        </h4>
+        <form id="checkout-form">
+          <div class="form-group">
+            <label for="shop-name" class="form-label">Shop Name *</label>
+            <input type="text" id="shop-name" class="form-input" placeholder="e.g. Balaji Kirana Store" required>
+          </div>
+          <div class="form-group">
+            <label for="shop-location" class="form-label">Location / Area</label>
+            <input type="text" id="shop-location" class="form-input" placeholder="e.g. Main Bazar, Yerraguntla">
+          </div>
+        </form>
+
+        <!-- Dynamic Totals summary -->
+        <div class="cart-summary-totals">
+          <div class="summary-row" style="margin-bottom: 0.85rem;">
+            <span>Total Items Selected</span>
+            <span id="cart-total-items" style="font-weight: 700; color: var(--primary);">0 items</span>
+          </div>
+          <div class="summary-row" style="border-top: 1px dashed var(--border-color); padding-top: 0.85rem;">
+            <span style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4; display: block;">Pricing, schemes, and bulk discounts will be calculated and finalized directly on WhatsApp.</span>
+          </div>
+        </div>
+
+        <!-- WhatsApp Submission Action -->
+        <button type="submit" form="checkout-form" id="whatsapp-submit-btn" class="whatsapp-submit-btn" disabled>
+          <svg style="width: 20px; height: 20px; fill: currentColor;" viewBox="0 0 24 24">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.73 14.1c-.24.69-1.42 1.26-1.97 1.3-1.61.12-3.51-.73-5.28-2.5-1.78-1.78-2.62-3.68-2.5-5.28.05-.55.62-1.73 1.31-1.97.23-.08.47-.11.7-.11.23 0 .46.01.66.45.2.49.71 1.73.77 1.86.06.12.1.27.02.44-.08.17-.18.28-.3.42l-.46.54c-.15.17-.31.36-.13.68.18.31.81 1.33 1.74 2.16.93.83 2.11 1.31 2.42 1.47.31.16.49.13.68-.08.19-.22.82-.95 1.04-1.28.22-.32.44-.27.73-.16.29.11 1.87.88 2.2 1.04.32.16.54.24.62.38.08.14.08.82-.16 1.51z"/>
+          </svg>
+          Send Order on WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Modal Target Overlays (CSS Only Zoom Lightboxes) -->
+  <div id="mtr-cert-modal" class="lightbox-modal">
+    <div class="lightbox-content">
+      <a href="#about-trust" class="lightbox-close">
+        <svg style="width: 18px; height: 18px; fill: white;" viewBox="0 0 24 24">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+        Close
+      </a>
+      <img src="images/certificates/mtr_auth.jpg" alt="MTR Partnership Certificate Full" class="lightbox-img">
+      <div class="lightbox-caption">MTR Partnership Certificate - Celebrating direct partnership with Sri Jyothi Agencies - Yerraguntla</div>
+    </div>
+  </div>
+
+  <div id="jyothy-award-modal" class="lightbox-modal">
+    <div class="lightbox-content">
+      <a href="#about-trust" class="lightbox-close">
+        <svg style="width: 18px; height: 18px; fill: white;" viewBox="0 0 24 24">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+        Close
+      </a>
+      <img src="images/certificates/jyothy_award.jpg" alt="Jyothy Labs Stockist Award Full" class="lightbox-img">
+      <div class="lightbox-caption">Jyothy Laboratories Limited - Stockist Meet Hyderabad Award</div>
+    </div>
+  </div>
+
+  <div id="gst-cert-modal" class="lightbox-modal">
+    <div class="lightbox-content">
+      <a href="#about-trust" class="lightbox-close">
+        <svg style="width: 18px; height: 18px; fill: white;" viewBox="0 0 24 24">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+        Close
+      </a>
+      <img src="images/certificates/gst_cert.jpg" alt="GST Certificate Full" class="lightbox-img">
+      <div class="lightbox-caption">GST Registration Document (Form GST REG-06)</div>
+    </div>
+  </div>
+
+  <div id="warehouse-modal" class="lightbox-modal">
+    <div class="lightbox-content">
+      <a href="#about-trust" class="lightbox-close">
+        <svg style="width: 18px; height: 18px; fill: white;" viewBox="0 0 24 24">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+        Close
+      </a>
+      <img src="images/shop/warehouse.jpg" alt="Warehouse Storage Full" class="lightbox-img">
+      <div class="lightbox-caption">Sri Jyothi Agencies Warehouse Floor</div>
+    </div>
+  </div>
+  
+  <div id="storefront-modal" class="lightbox-modal">
+    <div class="lightbox-content">
+      <a href="#about-trust" class="lightbox-close">
+        <svg style="width: 18px; height: 18px; fill: white;" viewBox="0 0 24 24">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+        Close
+      </a>
+      <img src="images/shop/storefront.jpg" alt="Office Storefront Full" class="lightbox-img">
+      <div class="lightbox-caption">Sri Jyothi Agencies Storefront Office</div>
+    </div>
+  </div>
+
+  <!-- Quick-View Product Modal -->
+  <div id="quick-view-backdrop"></div>
+  <div id="quick-view-modal">
+    <button id="close-quick-view" title="Close">&times;</button>
+    <div class="quick-view-content">
+      <!-- Populated dynamically by app.js -->
+    </div>
+  </div>
+
+  <!-- Database and Script Execution Links -->
+  <script src="js/products.js?v=1.1.0"></script>
+  <script src="js/app.js?v=1.1.0"></script>
+</body>
+</html>

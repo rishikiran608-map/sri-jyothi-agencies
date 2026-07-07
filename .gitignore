@@ -1,0 +1,13 @@
+# Antigravity agent files
+.gemini/
+.agents/
+.system_generated/
+*.log
+
+# Scratch scripts and temporary files
+scratch/
+
+# Design and implementation notes (not needed on live site)
+*.md
+*.json
+*.pdf
