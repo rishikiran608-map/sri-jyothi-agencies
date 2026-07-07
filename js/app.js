@@ -418,9 +418,13 @@ function setupEventListeners() {
             activeCategory = CATEGORIES[idx];
           }
           
-          // Sync active class on all buttons
+          // Sync active class on all buttons and auto-scroll mobile pills into center view
           document.querySelectorAll("[data-category]").forEach(el => {
-            el.classList.toggle("active", el.getAttribute("data-category") === categoryVal);
+            const isActive = el.getAttribute("data-category") === categoryVal;
+            el.classList.toggle("active", isActive);
+            if (isActive && el.classList.contains("mobile-category-pill")) {
+              el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+            }
           });
 
           renderProducts();
@@ -440,8 +444,13 @@ function setupEventListeners() {
       if (brand) {
         activeBrand = brand;
 
+        // Sync active class and auto-scroll active brand pill into center view
         document.querySelectorAll("[data-brand]").forEach(el => {
-          el.classList.toggle("active", el.getAttribute("data-brand") === brand);
+          const isActive = el.getAttribute("data-brand") === brand;
+          el.classList.toggle("active", isActive);
+          if (isActive && el.classList.contains("brand-pill")) {
+            el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+          }
         });
 
         renderProducts();
@@ -645,3 +654,21 @@ function closeQuickView() {
   if (backdrop) backdrop.classList.remove('open');
   document.body.style.overflow = '';
 }
+
+// --- Back to Top Button Logic ---
+document.addEventListener("DOMContentLoaded", () => {
+  const backToTopBtn = document.getElementById("back-to-top");
+  if (backToTopBtn) {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 400) {
+        backToTopBtn.classList.add("visible");
+      } else {
+        backToTopBtn.classList.remove("visible");
+      }
+    });
+
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+});
