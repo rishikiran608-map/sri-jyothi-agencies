@@ -426,7 +426,13 @@ function setupEventListeners() {
             const isActive = el.getAttribute("data-category") === categoryVal;
             el.classList.toggle("active", isActive);
             if (isActive && el.classList.contains("mobile-category-pill")) {
-              el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+              try {
+                el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+              } catch (err) {
+                try {
+                  el.scrollIntoView(false);
+                } catch (e) {}
+              }
             }
           });
 
@@ -452,7 +458,13 @@ function setupEventListeners() {
           const isActive = el.getAttribute("data-brand") === brand;
           el.classList.toggle("active", isActive);
           if (isActive && el.classList.contains("brand-pill")) {
-            el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+            try {
+              el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+            } catch (err) {
+              try {
+                el.scrollIntoView(false);
+              } catch (e) {}
+            }
           }
         });
 

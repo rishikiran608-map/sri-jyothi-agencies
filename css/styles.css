@@ -2374,6 +2374,18 @@ footer::before {
     display: flex;
   }
 
+  .mobile-categories-wrapper {
+    display: flex;
+    position: sticky;
+    top: 55px; /* sit right below the sticky header */
+    background: var(--bg-body);
+    z-index: 45;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
   .hero-section {
     padding: 3.5rem 1.5rem 3rem;
   }

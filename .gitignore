@@ -10,4 +10,5 @@ scratch/
 # Design and implementation notes (not needed on live site)
 *.md
 *.json
+!vercel.json
 *.pdf
