@@ -3033,58 +3033,6 @@ const PRODUCTS_DATA = [
     "description": "Official MTR Rasogolla product from MTR Foods catalog, pounded to perfection for authentic taste."
   },
   {
-    "id": "sja-mtr-119",
-    "name": "MTR Gobi Manchurian",
-    "brand": "MTR",
-    "category": "Snacks & Confectionery",
-    "mrp": 60,
-    "wholesalePrice": 51,
-    "packSize": "100g Box",
-    "image": "images/products/sja-mtr-119.png",
-    "inStock": true,
-    "fallbackColor": "linear-gradient(135deg, #EF4444, #DC2626)",
-    "description": "Official MTR Gobi Manchurian product from MTR Foods catalog, pounded to perfection for authentic taste."
-  },
-  {
-    "id": "sja-mtr-120",
-    "name": "MTR Bajji & Bonda (Pakoda)",
-    "brand": "MTR",
-    "category": "Snacks & Confectionery",
-    "mrp": 60,
-    "wholesalePrice": 51,
-    "packSize": "100g Box",
-    "image": "images/products/sja-mtr-120.png",
-    "inStock": true,
-    "fallbackColor": "linear-gradient(135deg, #EF4444, #DC2626)",
-    "description": "Official MTR Bajji & Bonda (Pakoda) product from MTR Foods catalog, pounded to perfection for authentic taste."
-  },
-  {
-    "id": "sja-mtr-121",
-    "name": "MTR Muruku",
-    "brand": "MTR",
-    "category": "Snacks & Confectionery",
-    "mrp": 40,
-    "wholesalePrice": 34,
-    "packSize": "100g Box",
-    "image": "images/products/sja-mtr-121.png",
-    "inStock": true,
-    "fallbackColor": "linear-gradient(135deg, #EF4444, #DC2626)",
-    "description": "Official MTR Muruku product from MTR Foods catalog, pounded to perfection for authentic taste."
-  },
-  {
-    "id": "sja-mtr-122",
-    "name": "MTR Biryani Paste",
-    "brand": "MTR",
-    "category": "Food & Spices",
-    "mrp": 60,
-    "wholesalePrice": 51,
-    "packSize": "100g Box",
-    "image": "images/products/sja-mtr-122.png",
-    "inStock": true,
-    "fallbackColor": "linear-gradient(135deg, #EF4444, #DC2626)",
-    "description": "Official MTR Biryani Paste product from MTR Foods catalog, pounded to perfection for authentic taste."
-  },
-  {
     "id": "sja-mtr-123",
     "name": "MTR Lemon Rice Paste",
     "brand": "MTR",
@@ -3096,19 +3044,6 @@ const PRODUCTS_DATA = [
     "inStock": true,
     "fallbackColor": "linear-gradient(135deg, #EF4444, #DC2626)",
     "description": "Official MTR Lemon Rice Paste product from MTR Foods catalog, pounded to perfection for authentic taste."
-  },
-  {
-    "id": "sja-mtr-124",
-    "name": "MTR Tomato Rice Paste",
-    "brand": "MTR",
-    "category": "Food & Spices",
-    "mrp": 60,
-    "wholesalePrice": 51,
-    "packSize": "100g Box",
-    "image": "images/products/sja-mtr-124.png",
-    "inStock": true,
-    "fallbackColor": "linear-gradient(135deg, #EF4444, #DC2626)",
-    "description": "Official MTR Tomato Rice Paste product from MTR Foods catalog, pounded to perfection for authentic taste."
   },
   {
     "id": "sja-denver-1",
