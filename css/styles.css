@@ -998,12 +998,17 @@ header {
 }
 
 .product-pack-size {
-  font-size: 0.78rem;
-  color: var(--text-light);
-  margin-bottom: 0.75rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  width: fit-content;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-light);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.55rem;
 }
 
 .product-pricing {
@@ -2384,6 +2389,10 @@ footer::before {
     margin-top: 0;
     margin-bottom: 0.75rem;
     border-bottom: 1px solid var(--border-color);
+  }
+
+  .product-brand-row {
+    display: none;
   }
 
   .hero-section {
