@@ -113,6 +113,33 @@ function initBrands() {
   }
 }
 
+// --- B2B Case Packaging Helper ---
+function getCaseSize(product) {
+  const name = product.name.toLowerCase();
+  const category = product.category.toLowerCase();
+  const brand = product.brand.toLowerCase();
+
+  if (brand === "ashika" || name.includes("agarbatti") || name.includes("dhoop")) {
+    return "50 Pkt/Case";
+  }
+  if (brand === "denver" || name.includes("deodorant") || name.includes("perfume")) {
+    return "24 Pcs/Case";
+  }
+  if (brand === "dukes" || name.includes("waffy") || name.includes("cookie") || name.includes("biscuit")) {
+    return "36 Pcs/Case";
+  }
+  if (category.includes("soap") || name.includes("soap") || name.includes("bar") || name.includes("scrub")) {
+    return "48 Pcs/Case";
+  }
+  if (name.includes("powder") || name.includes("paste") || name.includes("masala")) {
+    return "24 Pkt/Case";
+  }
+  if (name.includes("vermicelli") || name.includes("seviyan") || name.includes("sevai")) {
+    return "24 Pkt/Case";
+  }
+  return "24 Pcs/Case";
+}
+
 // --- Product Rendering & Fallback System ---
 function renderProducts() {
   const productsGrid = document.getElementById("products-grid");
@@ -176,9 +203,14 @@ function renderProducts() {
             <span class="product-category-text">${product.category}</span>
           </div>
           <h3 class="product-title" title="${product.name}">${product.name}</h3>
-          <span class="product-pack-size">
-            ${product.packSize}
-          </span>
+          <div class="product-packaging-row" style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+            <span class="product-pack-size">
+              ${product.packSize}
+            </span>
+            <span class="product-case-size">
+              ${getCaseSize(product)}
+            </span>
+          </div>
           <div class="product-pricing" style="margin-bottom: 1.15rem; margin-top: auto;">
             <span class="wholesale-price" style="font-size: 0.85rem; font-weight: 600; color: var(--text-light); background-color: var(--bg-surface); padding: 0.3rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 0.25rem;">
               <svg style="width: 14px; height: 14px; fill: var(--text-light);" viewBox="0 0 24 24">
