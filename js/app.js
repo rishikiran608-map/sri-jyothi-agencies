@@ -1,4 +1,18 @@
-// Sri Jyothi Agencies - Digital Product Catalogue Application Logic
+// --- Clear Old Service Workers / PWA Caches ---
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    for (let registration of registrations) {
+      registration.unregister().then(() => {
+        if (window.caches) {
+          caches.keys().then(names => {
+            for (let name of names) caches.delete(name);
+          });
+        }
+        window.location.reload();
+      });
+    }
+  });
+}
 
 // --- Application State ---
 let cart = [];
