@@ -19,6 +19,7 @@ let cart = [];
 let activeCategory = "All";
 let activeBrand = "All";
 let searchQuery = "";
+let selectedUnits = {}; // productId -> 'case' or 'pc'
 
 // Configurable WhatsApp Number (Country code + Number without '+')
 const WHATSAPP_RECIPIENT = "919849582606"; 
@@ -140,6 +141,12 @@ function getCaseSize(product) {
   return "24 Pcs/Case";
 }
 
+function getCaseCount(product) {
+  const caseStr = getCaseSize(product);
+  const match = caseStr.match(/^(\d+)/);
+  return match ? parseInt(match[1]) : 24;
+}
+
 // --- Product Rendering & Fallback System ---
 function renderProducts() {
   const productsGrid = document.getElementById("products-grid");
@@ -178,6 +185,7 @@ function renderProducts() {
   productsGrid.innerHTML = filteredProducts.map(product => {
     const cartItem = cart.find(item => item.id === product.id);
     const quantity = cartItem ? cartItem.qty : 0;
+    const itemUnit = cartItem ? cartItem.unit : (selectedUnits[product.id] || 'case');
     
     // Double-fallback image loading: Custom path -> default ID-based filename -> color gradient
     const imagePath = (product.image || `images/products/${product.id}.jpg`) + '?v=2';
@@ -220,7 +228,11 @@ function renderProducts() {
             </span>
           </div>
           
-          <div class="add-to-cart-container">
+          <div class="add-to-cart-container" style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
+            <div class="unit-selector">
+              <button class="unit-btn ${itemUnit === 'case' ? 'active' : ''}" onclick="event.stopPropagation(); setProductUnit('${product.id}', 'case')">Cases</button>
+              <button class="unit-btn ${itemUnit === 'pc' ? 'active' : ''}" onclick="event.stopPropagation(); setProductUnit('${product.id}', 'pc')">Loose Pcs</button>
+            </div>
             ${quantity === 0 ? `
               <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">
                 <svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24">
@@ -231,7 +243,7 @@ function renderProducts() {
             ` : `
               <div class="quantity-selector">
                 <button class="qty-btn" onclick="updateQty('${product.id}', -1)">−</button>
-                <span class="qty-display">${quantity}</span>
+                <span class="qty-display">${quantity} ${itemUnit === 'case' ? 'Case' + (quantity === 1 ? '' : 's') : 'Pc' + (quantity === 1 ? '' : 's')}</span>
                 <button class="qty-btn" onclick="updateQty('${product.id}', 1)">+</button>
               </div>
             `}
@@ -245,14 +257,15 @@ function renderProducts() {
   initScrollAnimations();
 }
 
-// --- Cart Operations ---
 function addToCart(productId) {
   const product = findProductById(productId);
   if (!product) return;
 
+  const unit = selectedUnits[productId] || 'case';
   const existingItem = cart.find(item => item.id === productId);
   if (existingItem) {
     existingItem.qty += 1;
+    existingItem.unit = unit; // sync with current selection
   } else {
     cart.push({
       id: product.id,
@@ -261,12 +274,26 @@ function addToCart(productId) {
       wholesalePrice: product.wholesalePrice,
       packSize: product.packSize,
       fallbackColor: product.fallbackColor,
-      qty: 1
+      qty: 1,
+      unit: unit
     });
   }
   
   saveCartToStorage();
   updateCartUI();
+  renderProducts();
+}
+
+function setProductUnit(productId, unit) {
+  selectedUnits[productId] = unit;
+  
+  const cartItem = cart.find(item => item.id === productId);
+  if (cartItem) {
+    cartItem.unit = unit;
+    saveCartToStorage();
+    updateCartUI();
+  }
+  
   renderProducts();
 }
 
@@ -340,11 +367,11 @@ function updateCartUI() {
         <h4 class="cart-item-name">${item.name}</h4>
         <div class="cart-item-meta">${item.brand} | ${item.packSize}</div>
         <div class="cart-item-pricing">
-          <span class="cart-item-cost" style="font-size: 0.85rem; color: var(--text-light);">Quantity: <strong>${item.qty}</strong></span>
+          <span class="cart-item-cost" style="font-size: 0.85rem; color: var(--text-light);">Quantity: <strong>${item.qty} ${item.unit === 'case' ? 'Case' + (item.qty === 1 ? '' : 's') : 'Pc' + (item.qty === 1 ? '' : 's')}</strong></span>
           
           <div class="cart-qty-selector">
             <button class="cart-qty-btn" onclick="updateQty('${item.id}', -1)">−</button>
-            <span class="cart-qty-val">${item.qty}</span>
+            <span class="cart-qty-val" style="min-width: 32px;">${item.qty} ${item.unit === 'case' ? 'Cs' : 'Pc'}</span>
             <button class="cart-qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
           </div>
         </div>
@@ -383,8 +410,17 @@ function sendOrderOnWhatsApp() {
   msg += `*Requested Products list:*\n`;
 
   cart.forEach((item, index) => {
-    msg += `${index + 1}. ${item.name} (${item.packSize})\n`;
-    msg += `   Qty: *${item.qty}*\n`;
+    const product = findProductById(item.id);
+    const unitLabel = item.unit === 'case' ? (item.qty === 1 ? 'Case' : 'Cases') : (item.qty === 1 ? 'Pc' : 'Pcs');
+    if (item.unit === 'case' && product) {
+      const caseSizeVal = getCaseCount(product);
+      const totalPcs = item.qty * caseSizeVal;
+      msg += `${index + 1}. ${item.name} (${item.packSize})\n`;
+      msg += `   Qty: *${item.qty} ${unitLabel}* (Total ${totalPcs} Pcs)\n`;
+    } else {
+      msg += `${index + 1}. ${item.name} (${item.packSize})\n`;
+      msg += `   Qty: *${item.qty} ${unitLabel}*\n`;
+    }
   });
 
   msg += `\n-------------------------------------------\n`;
