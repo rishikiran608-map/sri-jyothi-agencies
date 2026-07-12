@@ -2463,8 +2463,8 @@ footer::before {
   #products-grid,
   .products-grid {
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 0.6rem !important;
+    grid-template-columns: 50% 50% !important;
+    gap: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
   }
