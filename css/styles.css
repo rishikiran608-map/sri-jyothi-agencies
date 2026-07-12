@@ -1464,7 +1464,7 @@ header {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .qv-details-section {
     padding: 1.25rem;
   }
@@ -2404,7 +2404,7 @@ footer::before {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   body {
     padding-bottom: 85px;
   }
