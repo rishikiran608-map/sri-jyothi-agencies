@@ -2,14 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <script>
-    // Automatic cache buster redirect to force updates on all devices
-    if (!window.location.search.includes('v=2.2.0')) {
-      window.location.replace(window.location.origin + window.location.pathname + '?v=2.2.0');
-    }
-  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1e3c72">
+  <script>
+    try {
+      if (!window.location.search.includes('v=2.2.0')) {
+        window.location.replace(window.location.origin + window.location.pathname + '?v=2.2.0');
+      }
+    } catch (e) {
+      console.warn('Cache-buster redirect blocked:', e);
+    }
+  </script>
+ 
+ 
   <title>Sri Jyothi Agencies | Authorized FMCG Distributor</title>
   
   <!-- SEO Meta Tags -->
