@@ -771,6 +771,10 @@ header {
   margin-bottom: 1rem;
   padding: 0.25rem 0;
   -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .mobile-categories-wrapper::-webkit-scrollbar {
@@ -2371,6 +2375,11 @@ footer::before {
     grid-template-columns: 1fr;
   }
 
+  .catalog-content {
+    min-width: 0;
+    width: 100%;
+  }
+
   .filters-sidebar {
     display: none;
   }
@@ -2442,6 +2451,11 @@ footer::before {
     margin-top: 0;
     margin-bottom: 0.75rem;
     border-bottom: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: auto;
   }
 
   .product-brand-row {
