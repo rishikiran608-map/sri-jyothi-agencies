@@ -213,10 +213,6 @@ function renderProducts() {
           </div>
           
           <div class="add-to-cart-container" style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
-            <div class="unit-selector">
-              <button class="unit-btn ${itemUnit === 'case' ? 'active' : ''}" onclick="event.stopPropagation(); setProductUnit('${product.id}', 'case')">Cases</button>
-              <button class="unit-btn ${itemUnit === 'pc' ? 'active' : ''}" onclick="event.stopPropagation(); setProductUnit('${product.id}', 'pc')">Loose Pcs</button>
-            </div>
             ${quantity === 0 ? `
               <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">
                 <svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24">
