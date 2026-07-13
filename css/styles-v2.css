@@ -263,6 +263,27 @@ header {
   transform: rotate(15deg) scale(1.05);
 }
 
+/* Language Toggle */
+.lang-toggle-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  white-space: nowrap;
+}
+
+.lang-toggle-btn:hover {
+  background: var(--primary-glow);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 /* Search */
 .search-container {
   position: relative;
@@ -821,6 +842,153 @@ header {
   font-size: 0.9rem;
   color: var(--text-light);
   font-weight: 500;
+}
+
+/* Catalog Toolbar (Bulk Order Button) */
+.catalog-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bulk-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.bulk-toggle-btn:hover,
+.bulk-toggle-btn.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+  box-shadow: var(--shadow-glow);
+}
+
+/* ❤️ Favourite Heart Button (on card image) */
+.fav-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform 0.2s ease, background 0.2s ease;
+  z-index: 3;
+  padding: 0;
+}
+
+.fav-btn:hover {
+  transform: scale(1.2);
+  background: rgba(255,255,255,0.97);
+}
+
+.fav-btn.active {
+  background: rgba(255,240,245,0.95);
+}
+
+/* ❤️ Saved category pill accent */
+.fav-category-btn {
+  color: #e11d48 !important;
+  border-color: #fda4af !important;
+}
+
+.fav-category-btn.active,
+.mobile-category-pill.fav-category-btn.active {
+  background: linear-gradient(135deg, #e11d48, #f43f5e) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+
+/* 📦 Bulk Order Inputs */
+.bulk-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.bulk-qty-input {
+  flex: 1;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: var(--bg-surface);
+  color: var(--text-dark);
+  text-align: center;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+
+.bulk-qty-input:focus {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+}
+
+.bulk-unit-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Sticky Bulk Apply Bar */
+.bulk-apply-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  padding: 0.8rem 1.2rem;
+  display: none;
+  justify-content: center;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+}
+
+.bulk-apply-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: var(--primary-gradient);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-glow);
+}
+
+.bulk-apply-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
 }
 
 /* Mobile Search */

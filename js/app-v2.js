@@ -5,6 +5,47 @@ let activeBrand = "All";
 let searchQuery = "";
 let selectedUnits = {}; // productId -> 'case' or 'pc'
 let selectedVariants = {}; // groupKey -> productId (active variant per grouped product)
+let favorites = JSON.parse(localStorage.getItem('sja_favorites') || '[]');
+let bulkOrderMode = false;
+let currentLang = 'en';
+
+// --- Telugu / English Translations ---
+const TRANSLATIONS = {
+  en: {
+    brandName: 'Sri Jyothi Agencies',
+    tagline: 'Authorized FMCG Distributor',
+    verifyCredentials: 'Verify Credentials',
+    cart: 'Cart',
+    heroTitle: 'Your Trusted <span class="hero-highlight">Wholesale FMCG</span> Partner',
+    heroSubtitle: 'Official distributors of major brands: MTR, Dukes, Denver, Ujala, Ashikha. Simple, transparent browsing for retail shops and kirana stores.',
+    browseCatalogue: 'Browse Wholesale Catalogue',
+    searchPlaceholder: 'Search products, brands...',
+    addToEnquiry: 'Add to enquiry',
+    priceOnEnquiry: 'Price on Enquiry',
+    saved: '\u2665\uFE0F Saved',
+    bulkOrder: 'Bulk Order',
+    bulkApply: 'Add All to Enquiry',
+    noProducts: 'No products found',
+    noProductsHint: 'Try searching for a different keyword or removing filters.'
+  },
+  te: {
+    brandName: '\u0c36\u0c4d\u0c30\u0c40 \u0c1c\u0c4d\u0c2f\u0c4b\u0c24\u0c3f \u0c0f\u0c1c\u0c46\u0c28\u0c4d\u0c38\u0c40\u0c38\u0c4d',
+    tagline: '\u0c05\u0c27\u0c3f\u0c15\u0c3e\u0c30\u0c3f\u0c15 FMCG \u0c21\u0c3f\u0c38\u0c4d\u0c1f\u0c4d\u0c30\u0c3f\u0c2c\u0c4d\u0c2f\u0c42\u0c1f\u0c30\u0c4d',
+    verifyCredentials: '\u0c27\u0c43\u0c35\u0c40\u0c15\u0c30\u0c23\u0c32\u0c41 \u0c1a\u0c42\u0c21\u0c02\u0c21\u0c3f',
+    cart: '\u0c15\u0c3e\u0c30\u0c4d\u0c1f\u0c4d',
+    heroTitle: '\u0c2e\u0c40 \u0c28\u0c2e\u0c4d\u0c2e\u0c15\u0c2e\u0c48\u0c28 <span class="hero-highlight">\u0c39\u0c4b\u0c32\u0c4d\u200c\u0c38\u0c47\u0c32\u0c4d FMCG</span> \u0c2d\u0c3e\u0c17\u0c38\u0c4d\u0c35\u0c3e\u0c2e\u0c3f',
+    heroSubtitle: 'MTR, Dukes, Denver, Ujala, Ashikha \u0c2e\u0c41\u0c16\u0c4d\u0c2f \u0c2c\u0c4d\u0c30\u0c3e\u0c02\u0c21\u0c4d\u0c32 \u0c05\u0c27\u0c3f\u0c15\u0c43\u0c24 \u0c21\u0c3f\u0c38\u0c4d\u0c1f\u0c4d\u0c30\u0c3f\u0c2c\u0c4d\u0c2f\u0c42\u0c1f\u0c30\u0c4d\u0c32\u0c41. \u0c30\u0c3f\u0c1f\u0c46\u0c2f\u0c3f\u0c32\u0c4d \u0c37\u0c3e\u0c2a\u0c41\u0c32\u0c41 \u0c2e\u0c30\u0c3f\u0c2f\u0c41 \u0c15\u0c3f\u0c30\u0c3e\u0c28\u0c3e \u0c38\u0c4d\u0c1f\u0c4b\u0c30\u0c4d\u0c32 \u0c15\u0c4b\u0c38\u0c02 \u0c38\u0c30\u0c33\u0c2e\u0c48\u0c28 \u0c2c\u0c4d\u0c30\u0c4c\u0c1c\u0c3f\u0c02\u0c17\u0c4d.',
+    browseCatalogue: '\u0c39\u0c4b\u0c32\u0c4d\u200c\u0c38\u0c47\u0c32\u0c4d \u0c15\u0c47\u0c1f\u0c32\u0c3e\u0c17\u0c4d \u0c1a\u0c42\u0c21\u0c02\u0c21\u0c3f',
+    searchPlaceholder: '\u0c09\u0c24\u0c4d\u0c2a\u0c24\u0c4d\u0c24\u0c41\u0c32\u0c41, \u0c2c\u0c4d\u0c30\u0c3e\u0c02\u0c21\u0c4d\u0c32\u0c41 \u0c35\u0c46\u0c24\u0c15\u0c02\u0c21\u0c3f...',
+    addToEnquiry: '\u0c35\u0c3f\u0c1a\u0c3e\u0c30\u0c23\u0c15\u0c41 \u0c1c\u0c4b\u0c21\u0c3f\u0c02\u0c1a\u0c02\u0c21\u0c3f',
+    priceOnEnquiry: '\u0c35\u0c3f\u0c1a\u0c3e\u0c30\u0c23\u0c2a\u0c48 \u0c27\u0c30',
+    saved: '\u2665\uFE0F \u0c38\u0c47\u0c35\u0c4d \u0c1a\u0c47\u0c38\u0c3f\u0c28\u0c35\u0c3f',
+    bulkOrder: '\u0c2c\u0c32\u0c4d\u0c15\u0c4d \u0c06\u0c30\u0c4d\u0c21\u0c30\u0c4d',
+    bulkApply: '\u0c05న్నింటినీ \u0c35\u0c3f\u0c1a\u0c3e\u0c30\u0c23\u0c15\u0c41 \u0c1c\u0c4b\u0c21\u0c3f\u0c02\u0c1a\u0c02\u0c21\u0c3f',
+    noProducts: '\u0c09\u0c24\u0c4d\u0c2a\u0c24\u0c4d\u0c24\u0c41\u0c32\u0c41 \u0c15\u0c28\u0c41\u0c17\u0c4a\u0c28\u0c2c\u0c21\u0c32\u0c47\u0c26\u0c41',
+    noProductsHint: '\u0c35\u0c47\u0c30\u0c47 \u0c15\u0c40\u0c35\u0c30\u0c4d\u0c21\u0c4d\u0c24\u0c4b \u0c35\u0c46\u0c24\u0c15\u0c02\u0c21\u0c3f \u0c32\u0c47\u0c26\u0c3e \u0c2b\u0c3f\u0c32\u0c4d\u0c1f\u0c30\u0c4d\u0c32\u0c41 \u0c24\u0c4a\u0c32\u0c17\u0c3f\u0c02\u0c1a\u0c02\u0c21\u0c3f.'
+  }
+};
 
 // Configurable WhatsApp Number (Country code + Number without '+')
 const WHATSAPP_RECIPIENT = "919849582606"; 
@@ -63,17 +104,10 @@ function initCategories() {
   const desktopList = document.getElementById("desktop-category-list");
   if (desktopList) {
     desktopList.innerHTML = `
-      <li>
-        <button class="category-btn active" data-category="All">
-          All Categories
-        </button>
-      </li>
+      <li><button class="category-btn active" data-category="All">All Categories</button></li>
+      <li><button class="category-btn fav-category-btn" data-category="Saved">❤️ Saved</button></li>
     ` + CATEGORIES.map((cat, idx) => `
-      <li>
-        <button class="category-btn" data-category="${idx}">
-          ${cat}
-        </button>
-      </li>
+      <li><button class="category-btn" data-category="${idx}">${cat}</button></li>
     `).join('');
   }
 
@@ -81,7 +115,8 @@ function initCategories() {
   const mobileWrapper = document.getElementById("mobile-category-list");
   if (mobileWrapper) {
     mobileWrapper.innerHTML = `
-      <button class="mobile-category-pill active" data-category="All">All Categories</button>
+      <button class="mobile-category-pill active" data-category="All">All</button>
+      <button class="mobile-category-pill fav-category-btn" data-category="Saved">❤️ Saved</button>
     ` + CATEGORIES.map((cat, idx) => `
       <button class="mobile-category-pill" data-category="${idx}">${cat}</button>
     `).join('');
@@ -98,6 +133,117 @@ function initBrands() {
     `).join('');
   }
 }
+
+// --- ❤️ Favorites ---
+function isFavorite(productId) {
+  return favorites.includes(productId);
+}
+
+function saveFavorites() {
+  localStorage.setItem('sja_favorites', JSON.stringify(favorites));
+}
+
+function toggleFavorite(productId) {
+  if (isFavorite(productId)) {
+    favorites = favorites.filter(id => id !== productId);
+  } else {
+    favorites.push(productId);
+  }
+  saveFavorites();
+  renderProducts();
+}
+
+// --- 📦 Bulk Order Mode ---
+function toggleBulkMode() {
+  bulkOrderMode = !bulkOrderMode;
+  const btn = document.getElementById('bulk-mode-btn');
+  if (btn) {
+    btn.classList.toggle('active', bulkOrderMode);
+  }
+  // Show/hide the sticky bulk apply bar
+  let bar = document.getElementById('bulk-apply-bar');
+  if (bulkOrderMode) {
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'bulk-apply-bar';
+      bar.className = 'bulk-apply-bar';
+      bar.innerHTML = `<button class="bulk-apply-btn" onclick="applyBulkToCart()">
+        <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        <span data-i18n="bulkApply">Add All to Enquiry</span>
+      </button>`;
+      document.body.appendChild(bar);
+    }
+    bar.style.display = 'flex';
+  } else {
+    if (bar) bar.style.display = 'none';
+  }
+  renderProducts();
+}
+
+function applyBulkToCart() {
+  const inputs = document.querySelectorAll('.bulk-qty-input');
+  let added = 0;
+  inputs.forEach(input => {
+    const pid = input.dataset.id;
+    const qty = parseInt(input.value) || 0;
+    if (qty > 0) {
+      const existing = cart.find(item => item.id === pid);
+      if (existing) {
+        existing.qty = qty;
+      } else {
+        const product = findProductById(pid);
+        if (product) {
+          cart.push({ id: pid, qty, unit: selectedUnits[pid] || 'case', name: product.name, brand: product.brand });
+        }
+      }
+      added++;
+    }
+  });
+  if (added > 0) {
+    saveCartToStorage();
+    updateCartUI();
+    // Brief flash on button
+    const btn = document.querySelector('.bulk-apply-btn');
+    if (btn) {
+      btn.textContent = `✓ ${added} item${added > 1 ? 's' : ''} added!`;
+      setTimeout(() => {
+        btn.innerHTML = `<svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> <span data-i18n="bulkApply">${TRANSLATIONS[currentLang].bulkApply}</span>`;
+      }, 1800);
+    }
+  }
+}
+
+// --- 🌐 Telugu Language Toggle ---
+function toggleLanguage() {
+  currentLang = currentLang === 'en' ? 'te' : 'en';
+  const btn = document.getElementById('lang-toggle');
+  if (btn) btn.textContent = currentLang === 'te' ? 'EN' : 'తె / EN';
+  applyTranslations();
+  renderProducts(); // re-render so dynamic text (add to enquiry, etc.) updates
+}
+
+function applyTranslations() {
+  const t = TRANSLATIONS[currentLang];
+  // Static DOM elements with data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) {
+      if (el.tagName === 'INPUT') {
+        el.placeholder = t[key];
+      } else if (key === 'heroTitle') {
+        el.innerHTML = t[key];
+      } else {
+        el.textContent = t[key];
+      }
+    }
+  });
+  // Search inputs (placeholder)
+  document.querySelectorAll('.search-input').forEach(el => {
+    el.placeholder = t.searchPlaceholder;
+  });
+}
+
+
 
 // --- B2B Case Packaging Helper ---
 function getCaseSize(product) {
@@ -170,33 +316,39 @@ function renderProducts() {
   const resultsCount = document.getElementById("results-count");
   if (!productsGrid) return;
 
-  // Filter products based on search query, category, and brand
+  const t = TRANSLATIONS[currentLang];
+
+  // Filter products based on search query, category, brand, and favorites
   const filteredProducts = PRODUCTS_DATA.filter(product => {
-    const matchesCategory = activeCategory === "All" || product.category === activeCategory;
+    if (activeCategory === 'Saved') {
+      if (!isFavorite(product.id)) return false;
+    } else {
+      const matchesCategory = activeCategory === "All" || product.category === activeCategory;
+      if (!matchesCategory) return false;
+    }
     const matchesBrand = activeBrand === "All" || product.brand === activeBrand;
     const searchString = `${product.name} ${product.brand} ${product.category}`.toLowerCase();
     const matchesSearch = searchString.includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesBrand && matchesSearch;
+    return matchesBrand && matchesSearch;
   });
 
   // Group into Amazon-style variant groups
   const productGroups = groupProductsByBase(filteredProducts);
 
-  // Update results count (show unique products, not total variants)
+  // Update results count
   if (resultsCount) {
     resultsCount.textContent = `Showing ${productGroups.length} product${productGroups.length === 1 ? '' : 's'}`;
   }
 
   if (productGroups.length === 0) {
+    const emptyMsg = activeCategory === 'Saved'
+      ? '<h3>No saved products yet</h3><p>Tap the ❤️ on any product to save it here for quick access.</p>'
+      : `<h3>${t.noProducts}</h3><p>${t.noProductsHint}</p>`;
     productsGrid.innerHTML = `
       <div class="empty-state">
-        <svg viewBox="0 0 24 24">
-          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-        </svg>
-        <h3>No products found</h3>
-        <p>Try searching for a different keyword or removing filters.</p>
-      </div>
-    `;
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        ${emptyMsg}
+      </div>`;
     return;
   }
 
@@ -208,6 +360,7 @@ function renderProducts() {
     const cartItem = cart.find(item => item.id === activeVariant.id);
     const quantity = cartItem ? cartItem.qty : 0;
     const itemUnit = cartItem ? cartItem.unit : (selectedUnits[activeVariant.id] || 'case');
+    const faved = isFavorite(activeVariant.id);
 
     // Image with double fallback
     const imagePath = (activeVariant.image || `images/products/${activeVariant.id}.jpg`) + '?v=2';
@@ -218,6 +371,11 @@ function renderProducts() {
         <span class="fallback-category-name">${group.category}</span>
       </div>`;
 
+    // Favourite heart button (top-right on image)
+    const heartBtn = `<button class="fav-btn${faved ? ' active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${activeVariant.id}')" title="${faved ? 'Remove from saved' : 'Save product'}">
+      ${faved ? '❤️' : '🤍'}
+    </button>`;
+
     // Variant size buttons (only shown when 2+ variants exist)
     const variantButtons = group.variants.length > 1
       ? `<div class="variant-selector">${group.variants.map(v =>
@@ -225,11 +383,29 @@ function renderProducts() {
         ).join('')}</div>`
       : `<div class="single-variant-tag">${activeVariant.packSize}</div>`;
 
+    // Cart action — bulk mode shows number input, normal mode shows button/stepper
+    const cartAction = bulkOrderMode
+      ? `<div class="bulk-input-wrapper">
+          <input type="number" class="bulk-qty-input" data-id="${activeVariant.id}" min="0" placeholder="Qty" value="${quantity > 0 ? quantity : ''}" onclick="event.stopPropagation()">
+          <span class="bulk-unit-label">Cases</span>
+        </div>`
+      : (quantity === 0
+          ? `<button class="add-to-cart-btn" onclick="addToCart('${activeVariant.id}')">
+              <svg style="width:15px;height:15px;fill:currentColor;" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              ${t.addToEnquiry}
+            </button>`
+          : `<div class="quantity-selector">
+              <button class="qty-btn" onclick="updateQty('${activeVariant.id}', -1)">−</button>
+              <span class="qty-display">${quantity} ${itemUnit === 'case' ? 'Case' + (quantity === 1 ? '' : 's') : 'Pc' + (quantity === 1 ? '' : 's')}</span>
+              <button class="qty-btn" onclick="updateQty('${activeVariant.id}', 1)">+</button>
+            </div>`);
+
     return `
-      <div class="product-card" data-id="${activeVariant.id}">
+      <div class="product-card${bulkOrderMode ? ' bulk-mode-card' : ''}" data-id="${activeVariant.id}">
         <div class="product-image-container" onclick="openQuickView('${activeVariant.id}')" style="cursor:pointer">
           ${imageHTML}
           ${fallbackHTML}
+          ${heartBtn}
         </div>
         <div class="product-info">
           <div class="product-brand-row">
@@ -238,24 +414,13 @@ function renderProducts() {
           <h3 class="product-title" title="${group.baseName}">${group.baseName}</h3>
           ${variantButtons}
           <div class="product-pricing">
-            <span class="wholesale-price" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light); background-color: var(--bg-surface); padding: 0.25rem 0.55rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 0.2rem;">
-              <svg style="width: 12px; height: 12px; fill: var(--text-light);" viewBox="0 0 24 24"><path d="M21 15c0-4.62-3.5-8.28-8-8.91V5c0-.55-.45-1-1-1s-1 .45-1 1v1.09C6.5 6.72 3 10.38 3 15c0 .55.45 1 1 1s1-.45 1-1c0-3.86 3.14-7 7-7s7 3.14 7 7c0 .55.45 1 1 1s1-.45 1-1zM12 18c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
-              Price on Enquiry
+            <span class="wholesale-price" style="font-size:0.8rem;font-weight:600;color:var(--text-light);background-color:var(--bg-surface);padding:0.25rem 0.55rem;border-radius:var(--radius-sm);border:1px solid var(--border-color);display:inline-flex;align-items:center;gap:0.2rem;">
+              <svg style="width:12px;height:12px;fill:var(--text-light);" viewBox="0 0 24 24"><path d="M21 15c0-4.62-3.5-8.28-8-8.91V5c0-.55-.45-1-1-1s-1 .45-1 1v1.09C6.5 6.72 3 10.38 3 15c0 .55.45 1 1 1s1-.45 1-1c0-3.86 3.14-7 7-7s7 3.14 7 7c0 .55.45 1 1 1s1-.45 1-1zM12 18c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+              ${t.priceOnEnquiry}
             </span>
           </div>
           <div class="add-to-cart-container">
-            ${quantity === 0 ? `
-              <button class="add-to-cart-btn" onclick="addToCart('${activeVariant.id}')">
-                <svg style="width: 15px; height: 15px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                Add to enquiry
-              </button>
-            ` : `
-              <div class="quantity-selector">
-                <button class="qty-btn" onclick="updateQty('${activeVariant.id}', -1)">−</button>
-                <span class="qty-display">${quantity} ${itemUnit === 'case' ? 'Case' + (quantity === 1 ? '' : 's') : 'Pc' + (quantity === 1 ? '' : 's')}</span>
-                <button class="qty-btn" onclick="updateQty('${activeVariant.id}', 1)">+</button>
-              </div>
-            `}
+            ${cartAction}
           </div>
         </div>
       </div>
@@ -265,6 +430,7 @@ function renderProducts() {
   // Scroll entrance animations
   initScrollAnimations();
 }
+
 
 
 function addToCart(productId) {
