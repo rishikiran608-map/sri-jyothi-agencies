@@ -236,41 +236,8 @@ function renderProducts() {
   // Initialize scroll entrance animations for newly rendered cards
   initScrollAnimations();
 
-  // Floating diagnostic debug badge for mobile layout tracing
-  try {
-    const gridEl = document.getElementById("products-grid");
-    if (gridEl) {
-      const computed = window.getComputedStyle(gridEl);
-      let debugBadge = document.getElementById("debug-badge");
-      if (!debugBadge) {
-        debugBadge = document.createElement("div");
-        debugBadge.id = "debug-badge";
-        debugBadge.style.position = "fixed";
-        debugBadge.style.bottom = "85px"; // clear navigation/cart elements
-        debugBadge.style.left = "10px";
-        debugBadge.style.zIndex = "99999";
-        debugBadge.style.background = "rgba(0,0,0,0.9)";
-        debugBadge.style.color = "#00ff00";
-        debugBadge.style.padding = "8px 12px";
-        debugBadge.style.fontFamily = "monospace";
-        debugBadge.style.fontSize = "11px";
-        debugBadge.style.borderRadius = "6px";
-        debugBadge.style.border = "1px solid #00ff00";
-        debugBadge.style.pointerEvents = "none";
-        document.body.appendChild(debugBadge);
-      }
-      debugBadge.innerHTML = `
-        Viewport: ${window.innerWidth}px x ${window.innerHeight}px<br>
-        Grid Display: ${computed.display}<br>
-        Grid Columns: ${computed.gridTemplateColumns}<br>
-        Class: ${gridEl.className}<br>
-        ID: ${gridEl.id}
-      `;
-    }
-  } catch (e) {
-    console.warn("Debug badge error:", e);
-  }
 }
+
 
 function addToCart(productId) {
   const product = findProductById(productId);
