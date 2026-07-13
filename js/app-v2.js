@@ -4,6 +4,7 @@ let activeCategory = "All";
 let activeBrand = "All";
 let searchQuery = "";
 let selectedUnits = {}; // productId -> 'case' or 'pc'
+let selectedVariants = {}; // groupKey -> productId (active variant per grouped product)
 
 // Configurable WhatsApp Number (Country code + Number without '+')
 const WHATSAPP_RECIPIENT = "919849582606"; 
@@ -131,6 +132,38 @@ function getCaseCount(product) {
   return match ? parseInt(match[1]) : 24;
 }
 
+// --- Group products by base name (strip trailing pack size in parentheses) ---
+function groupProductsByBase(products) {
+  const groups = {};
+
+  products.forEach(product => {
+    // Strip trailing (...) to get the base product name
+    const baseName = product.name.replace(/\s*\([^)]+\)\s*$/, '').trim();
+    const groupKey = `${product.brand}|||${baseName}`;
+
+    if (!groups[groupKey]) {
+      groups[groupKey] = {
+        groupKey,
+        baseName,
+        brand: product.brand,
+        category: product.category,
+        fallbackColor: product.fallbackColor,
+        description: product.description,
+        variants: []
+      };
+    }
+    groups[groupKey].variants.push(product);
+  });
+
+  return Object.values(groups);
+}
+
+// --- Switch active variant on a grouped product card ---
+function selectVariant(groupKey, productId) {
+  selectedVariants[groupKey] = productId;
+  renderProducts();
+}
+
 // --- Product Rendering & Fallback System ---
 function renderProducts() {
   const productsGrid = document.getElementById("products-grid");
@@ -141,19 +174,20 @@ function renderProducts() {
   const filteredProducts = PRODUCTS_DATA.filter(product => {
     const matchesCategory = activeCategory === "All" || product.category === activeCategory;
     const matchesBrand = activeBrand === "All" || product.brand === activeBrand;
-    
     const searchString = `${product.name} ${product.brand} ${product.category}`.toLowerCase();
     const matchesSearch = searchString.includes(searchQuery.toLowerCase());
-    
     return matchesCategory && matchesBrand && matchesSearch;
   });
 
-  // Update counts
+  // Group into Amazon-style variant groups
+  const productGroups = groupProductsByBase(filteredProducts);
+
+  // Update results count (show unique products, not total variants)
   if (resultsCount) {
-    resultsCount.textContent = `Showing ${filteredProducts.length} product${filteredProducts.length === 1 ? '' : 's'}`;
+    resultsCount.textContent = `Showing ${productGroups.length} product${productGroups.length === 1 ? '' : 's'}`;
   }
 
-  if (filteredProducts.length === 0) {
+  if (productGroups.length === 0) {
     productsGrid.innerHTML = `
       <div class="empty-state">
         <svg viewBox="0 0 24 24">
@@ -166,65 +200,60 @@ function renderProducts() {
     return;
   }
 
-  productsGrid.innerHTML = filteredProducts.map(product => {
-    const cartItem = cart.find(item => item.id === product.id);
+  productsGrid.innerHTML = productGroups.map(group => {
+    // Pick the active variant for this group (default to first)
+    const activeId = selectedVariants[group.groupKey] || group.variants[0].id;
+    const activeVariant = group.variants.find(v => v.id === activeId) || group.variants[0];
+
+    const cartItem = cart.find(item => item.id === activeVariant.id);
     const quantity = cartItem ? cartItem.qty : 0;
-    const itemUnit = cartItem ? cartItem.unit : (selectedUnits[product.id] || 'case');
-    
-    // Double-fallback image loading: Custom path -> default ID-based filename -> color gradient
-    const imagePath = (product.image || `images/products/${product.id}.jpg`) + '?v=2';
-    const imageHTML = `<img src="${imagePath}" alt="${product.name}" class="product-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`;
-    
+    const itemUnit = cartItem ? cartItem.unit : (selectedUnits[activeVariant.id] || 'case');
+
+    // Image with double fallback
+    const imagePath = (activeVariant.image || `images/products/${activeVariant.id}.jpg`) + '?v=2';
+    const imageHTML = `<img src="${imagePath}" alt="${group.baseName}" class="product-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`;
     const fallbackHTML = `
-      <div class="product-image-fallback" style="background: ${product.fallbackColor || 'linear-gradient(135deg, #2a5298, #1e3c72)'}; display: none;">
-        <span class="fallback-brand-icon">${product.brand.charAt(0)}</span>
-        <span class="fallback-category-name">${product.category}</span>
-      </div>
-    `;
+      <div class="product-image-fallback" style="background: ${group.fallbackColor || 'linear-gradient(135deg, #2a5298, #1e3c72)'}; display: none;">
+        <span class="fallback-brand-icon">${group.brand.charAt(0)}</span>
+        <span class="fallback-category-name">${group.category}</span>
+      </div>`;
+
+    // Variant size buttons (only shown when 2+ variants exist)
+    const variantButtons = group.variants.length > 1
+      ? `<div class="variant-selector">${group.variants.map(v =>
+          `<button class="variant-btn${v.id === activeVariant.id ? ' active' : ''}" onclick="event.stopPropagation(); selectVariant('${group.groupKey}', '${v.id}')">${v.packSize}</button>`
+        ).join('')}</div>`
+      : `<div class="single-variant-tag">${activeVariant.packSize}</div>`;
 
     return `
-      <div class="product-card" data-id="${product.id}">
-        <div class="product-image-container" onclick="openQuickView('${product.id}')" style="cursor:pointer">
+      <div class="product-card" data-id="${activeVariant.id}">
+        <div class="product-image-container" onclick="openQuickView('${activeVariant.id}')" style="cursor:pointer">
           ${imageHTML}
           ${fallbackHTML}
         </div>
         <div class="product-info">
           <div class="product-brand-row">
-            <span class="product-brand-text">${product.brand}</span>
-            <span class="brand-category-divider">·</span>
-            <span class="product-category-text">${product.category}</span>
+            <span class="product-brand-text">${group.brand}</span>
           </div>
-          <h3 class="product-title" title="${product.name}">${product.name}</h3>
-          <div class="product-packaging-row" style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-            <span class="product-pack-size">
-              ${product.packSize}
-            </span>
-            <span class="product-case-size">
-              ${getCaseSize(product)}
-            </span>
-          </div>
-          <div class="product-pricing" style="margin-bottom: 1.15rem; margin-top: auto;">
-            <span class="wholesale-price" style="font-size: 0.85rem; font-weight: 600; color: var(--text-light); background-color: var(--bg-surface); padding: 0.3rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 0.25rem;">
-              <svg style="width: 14px; height: 14px; fill: var(--text-light);" viewBox="0 0 24 24">
-                <path d="M21 15c0-4.62-3.5-8.28-8-8.91V5c0-.55-.45-1-1-1s-1 .45-1 1v1.09C6.5 6.72 3 10.38 3 15c0 .55.45 1 1 1s1-.45 1-1c0-3.86 3.14-7 7-7s7 3.14 7 7c0 .55.45 1 1 1s1-.45 1-1zM12 18c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-              </svg>
+          <h3 class="product-title" title="${group.baseName}">${group.baseName}</h3>
+          ${variantButtons}
+          <div class="product-pricing">
+            <span class="wholesale-price" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light); background-color: var(--bg-surface); padding: 0.25rem 0.55rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 0.2rem;">
+              <svg style="width: 12px; height: 12px; fill: var(--text-light);" viewBox="0 0 24 24"><path d="M21 15c0-4.62-3.5-8.28-8-8.91V5c0-.55-.45-1-1-1s-1 .45-1 1v1.09C6.5 6.72 3 10.38 3 15c0 .55.45 1 1 1s1-.45 1-1c0-3.86 3.14-7 7-7s7 3.14 7 7c0 .55.45 1 1 1s1-.45 1-1zM12 18c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
               Price on Enquiry
             </span>
           </div>
-          
-          <div class="add-to-cart-container" style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
+          <div class="add-to-cart-container">
             ${quantity === 0 ? `
-              <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">
-                <svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24">
-                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                </svg>
+              <button class="add-to-cart-btn" onclick="addToCart('${activeVariant.id}')">
+                <svg style="width: 15px; height: 15px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                 Add to enquiry
               </button>
             ` : `
               <div class="quantity-selector">
-                <button class="qty-btn" onclick="updateQty('${product.id}', -1)">−</button>
+                <button class="qty-btn" onclick="updateQty('${activeVariant.id}', -1)">−</button>
                 <span class="qty-display">${quantity} ${itemUnit === 'case' ? 'Case' + (quantity === 1 ? '' : 's') : 'Pc' + (quantity === 1 ? '' : 's')}</span>
-                <button class="qty-btn" onclick="updateQty('${product.id}', 1)">+</button>
+                <button class="qty-btn" onclick="updateQty('${activeVariant.id}', 1)">+</button>
               </div>
             `}
           </div>
@@ -233,9 +262,8 @@ function renderProducts() {
     `;
   }).join('');
 
-  // Initialize scroll entrance animations for newly rendered cards
+  // Scroll entrance animations
   initScrollAnimations();
-
 }
 
 
